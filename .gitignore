@@ -1,0 +1,7 @@
+# 简单的模板
+# IntelliJ project files
+.gitignore
+.idea
+*.iml
+out
+gen
