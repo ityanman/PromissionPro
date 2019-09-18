@@ -31,4 +31,7 @@
     select pid, pname, presource
     from permission
   </select>
+    <select id="getPrimaryByrid" resultType="com.itlike.domain.Permission">
+      SELECT * FROM permission WHERE pid in(SELECT pid FROM role_permission_rel WHERE rid = #{rid})
+    </select>
 </mapper>

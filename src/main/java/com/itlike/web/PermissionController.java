@@ -19,4 +19,13 @@ public class PermissionController {
         List<Permission> PermissionList = permissionService.getAllPermission();
         return PermissionList;
     }
+    //接收 "根据角色id获取权限" 的请求
+    @RequestMapping("/getPermissionByRoleid")
+    @ResponseBody
+    public List<Permission> getPermissionByRoleid(long rid){
+        System.out.println("ddddd"+rid);
+        //调用service层
+        List<Permission> permissions = permissionService.getPermissionByid(rid);
+        return permissions;
+    }
 }

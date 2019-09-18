@@ -10,11 +10,18 @@
     delete from role
     where rid = #{rid,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.itlike.domain.Role" >
+  <!--//删除关系表中的权限关系-->
+  <delete id="deleteRolePermission">
+    delete FROM role_permission_rel WHERE rid = #{rid}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.Role" useGeneratedKeys="true" keyProperty="rid">
     insert into role (rid, rnum, rname
       )
     values (#{rid,jdbcType=BIGINT}, #{rnum,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR}
       )
+  </insert>
+  <insert id="inserRolePermission">
+    insert into role_permission_rel(rid,pid) values (#{rid},#{pid})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Role" >
     update role
@@ -22,7 +29,7 @@
       rname = #{rname,jdbcType=VARCHAR}
     where rid = #{rid,jdbcType=BIGINT}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
     select rid, rnum, rname
     from role
     where rid = #{rid,jdbcType=BIGINT}
@@ -31,4 +38,7 @@
     select rid, rnum, rname
     from role
   </select>
+    <select id="getRoleByid" resultType="java.lang.Long">
+      select rid from employee_role_res where eid = #{id}
+    </select>
 </mapper>

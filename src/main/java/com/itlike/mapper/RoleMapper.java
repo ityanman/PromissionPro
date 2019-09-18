@@ -1,6 +1,8 @@
 package com.itlike.mapper;
 
 import com.itlike.domain.Role;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface RoleMapper {
@@ -13,4 +15,10 @@ public interface RoleMapper {
     List<Role> selectAll();
 
     int updateByPrimaryKey(Role record);
+
+    void inserRolePermission(@Param("rid") Long rid, @Param("pid") Long pid);
+
+    void deleteRolePermission(Long rid);
+
+    List<Long> getRoleByid(Long id);
 }

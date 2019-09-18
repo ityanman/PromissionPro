@@ -46,7 +46,7 @@ $(function () {
     /*对话框*/
    $("#dialog").dialog({
     width:350,
-    height:350,
+    height:400,
     closed: true,
        //添加保存和关闭按钮
        buttons:[{
@@ -63,6 +63,16 @@ $(function () {
                //提交表单
                $("#employeeForm").form("submit",{
                    url:url,
+                   //添加额外参数
+                   onSubmit:function(param){
+                       /*获取选中的角色*/
+                       var values =  $("#role").combobox("getValues");
+                       for(var i = 0; i < values.length; i++){
+                           var rid  =  values[i];
+                           param["roles["+i+"].rid"] = rid;
+                       }
+                   },
+                   //返回给页面的信息
                    success:function (data) {
                        data = $.parseJSON(data)
                       if (data.success){
@@ -93,7 +103,7 @@ $(function () {
         //打开对话框
         $("#dialog").dialog("open");
         /*显示密码*/
-        $("#password").hide();
+        $("#password").show();
     })
 
     /*监听编辑按钮*/
@@ -103,7 +113,7 @@ $(function () {
         //判断是否选中一行
         var rowdata = $("#dg").datagrid("getSelected");
         if (!rowdata){
-            $.messager.alert("请选择一行数据")
+            $.messager.alert("温馨提示","请选择一条数据")
             return;
         }
         //弹出对话框
@@ -114,6 +124,13 @@ $(function () {
         rowdata["department.id"] = rowdata["department"].id;
         //回显管理员
         rowdata["admin"] = rowdata["admin"]+""
+        //回显角色
+        //根据用户id查询出对应的角色
+        $.get("/getRoleByid?id="+rowdata.id,function (data) {
+            //回显下拉列表
+            $("#role").combobox("setValues",data)
+        })
+
         //数据回显
         $("#employeeForm").form("load",rowdata);
 
@@ -197,6 +214,26 @@ $(function () {
         }],
         onLoadSuccess:function () {
             $("#admin").each(function(i){
+                var span = $(this).siblings("span")[i];
+                var targetInput = $(span).find("input:first");
+                if(targetInput){
+                    $(targetInput).attr("placeholder", $(this).attr("placeholder"));
+                }
+            });
+        }
+    })
+    /*角色下拉列表*/
+    $("#role").combobox({
+        url:"selectRole",
+        width:150,
+        panelHeight:'auto',
+        editable:false,
+        valueField: 'rid',
+        textField: 'rname',
+        multiple:true,
+
+        onLoadSuccess:function () {
+            $("#role").each(function(i){
                 var span = $(this).siblings("span")[i];
                 var targetInput = $(span).find("input:first");
                 if(targetInput){

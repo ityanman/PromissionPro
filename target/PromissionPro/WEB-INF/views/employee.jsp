@@ -15,9 +15,18 @@
 <body>
 <%--工具栏按钮--%>
 <div id="tb">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" id="add">添加</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" id="edit">编辑</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" id="delete">离职</a>
+    <shiro:hasPermission name="employee:add">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" id="add">添加</a>
+    </shiro:hasPermission>
+
+    <shiro:hasPermission name="employee:edit">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" id="edit">编辑</a>
+    </shiro:hasPermission>
+
+    <shiro:hasPermission name="employee:delete">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" id="delete">离职</a>
+    </shiro:hasPermission>
+
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" id="reload">刷新</a>
     <input name="searchBox" id="searchBtn" class="easyui-searchbox" style="width:200px ;height:30px;padding-left: 5px" placeholder="搜索..."/>
     <%--<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" id="search">搜索</a>--%>
@@ -32,6 +41,7 @@
                 <td>用户名:</td>
                 <td><input type="text"name="username" class="easyui-validatebox"></td>
             </tr>
+
             <tr id="password">
                 <td>密码:</td>
                 <td><input type="text" name="password" class="easyui-validatebox" ></td>
@@ -57,6 +67,10 @@
                 <td>是否管理员:</td>
                 <td><input id="admin" name="admin" placeholder="是否为管理员"/></td>
             </tr>
+            <tr>
+                    <td>选择角色:</td>
+                    <td><input id="role" name="role" placeholder="选择角色"/></td>
+             </tr>
         </table>
     </form>
 
